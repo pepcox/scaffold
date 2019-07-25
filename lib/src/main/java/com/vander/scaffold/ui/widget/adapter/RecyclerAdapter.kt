@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import io.reactivex.processors.PublishProcessor
+import timber.log.Timber
 
 /**
  * Observable recycler adapter, type parameters specify recycler item object and event object
@@ -46,7 +47,11 @@ class RecyclerAdapter<T : AdapterModel, R>(
 
   override fun getItemCount(): Int = source.itemCount
 
-  override fun getItemViewType(position: Int): Int = source.getLayoutRes(position)
+  override fun getItemViewType(position: Int): Int {
+
+    Timber.d("NOHA getItemViewType position: $position = ${source.getLayoutRes(position)}")
+    return source.getLayoutRes(position)
+  }
 
   override fun getItemId(position: Int): Long = source.getItemId(position)
 

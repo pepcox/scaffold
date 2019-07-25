@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.*
 import io.reactivex.processors.PublishProcessor
+import timber.log.Timber
 
 /**
  * Observable paged recycler adapter, type parameters specify recycler item object and event object
@@ -18,11 +19,17 @@ class PagedRecyclerAdapter<T : AdapterModel, R>(
 
   override val itemEventSource: PublishProcessor<R> = PublishProcessor.create<R>()
 
-  override fun onCreateViewHolder(parent: ViewGroup, layoutRes: Int): ViewHolder<T, R> =
-      viewHolderFactory.invoke(layoutRes, LayoutInflater.from(parent.context).inflate(layoutRes, parent, false))
+  override fun onCreateViewHolder(parent: ViewGroup, layoutRes: Int): ViewHolder<T, R> {
+    Timber.d("NOHA onCreateViewHolder() layoutResource: $layoutRes parent: $parent")
+    return viewHolderFactory.invoke(layoutRes, LayoutInflater.from(parent.context).inflate(layoutRes, parent, false))
+  }
 
-  override fun onBindViewHolder(holder: ViewHolder<T, R>, position: Int) =
-      holder.bind(getItem(position))
+
+  override fun onBindViewHolder(holder: ViewHolder<T, R>, position: Int) {
+    Timber.d("NOHA onBindViewHolder() item id: ${getItem(position)!!.id} position: $position item: ${getItem(position)!!.layoutRes}")
+    return holder.bind(getItem(position))
+  }
+
 
 
   override fun onViewAttachedToWindow(holder: ViewHolder<T, R>) {
